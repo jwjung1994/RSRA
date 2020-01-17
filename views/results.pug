@@ -1,0 +1,16 @@
+extends layout
+block content
+    div(id='page-wrapper')
+        div(id='inner')
+            div(class='row')
+                div(class='col-md-12')
+                    h2 Recommend Security Requirements about APT
+                    div
+                        ul(class='nav nav-tabs')
+                            li
+                                a(href='/results/apt') Similar Case
+                            li
+                                a(href='/results/risk') Risk Assessment
+                            li
+                                a(href='/results/recommend') Security Requirement Template
+                    block results

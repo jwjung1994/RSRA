@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title= title
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/assets/css/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/assets/css/font-awesome.css')
+    link(rel='stylesheet', href='/stylesheets/assets/css/custom.css')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans', type='text/css')
+    script(src='https://code.jquery.com/jquery-1.9.1.min.js')
+    script(src='/stylesheets/assets/js/bootstrap.min.js', type='text/javascript')
+    block scripts
+  body
+    div(id='wrapper')
+      div(class='navbar navbar-inverse navbar-fixed-top')
+        div(class='adjust-nav')
+          div(class='navbar-header')
+            button(type='button', class='navbar-toggle', data-toggle='collapse', data-target='.sidebar-collapse')
+              span(class='icon-bar')
+            a(class='navbar-brand', href='/') RSRA
+          ul(class='nav navbar-nav')
+            li
+              a(href='/domain') Input Domain Knowledge
+            li
+              a(href='/case') Input APT cases
+            li
+              a(href='/results') Risk Assessment
+    block content

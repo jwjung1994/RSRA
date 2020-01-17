@@ -1,0 +1,39 @@
+extends layout
+block scripts
+    script(src="/javascripts/input_case.js")
+block content
+    -var apt_phase = ["Reconnaissance_phase", "Delivery_phase", "Initial_intrusion_phase", "Connecting_to_server_phase", "Lateral_movement_phase", "Information_gathering_phase", "Completing_the_attack_phase"];
+    div(id='page-wrapper')
+        div(id='inner')
+            div(class='row')
+                div(class='col-md-12')
+                    h2 Input APT case elements
+                    div.col-md-6
+                        label(for='select1') APT Stage
+                        select#select1.form-control(onchange="changeMenu()")
+                            option(value="", disabled, selected="true") -- select --
+                            each phase in apt_phase
+                                option(value = phase) #{phase}
+                    div.col-md-6
+                        label(for='select2') APT element
+                        select#select2.form-control(onchange="changeSecondMenu()")
+                            option(value = "", disabled, selected="true") -- select --
+                        br
+                    div.col-md-12
+                        label(for="ele_name") Element
+                        input#ele_name.form-control
+                        br
+                        button.btn.btn-primary(onclick="addElement()") Add
+                div.col-md-12
+                   h3 Inputted Elements
+                   table#ele_table.col-md-12
+                       thead
+                            tr
+                                th APT Stage
+                                th APT element
+                                th Sub class
+                                th Name
+                                th Delete
+                       tbody
+                            tr
+                button.btn.btn-primary.col-md-12(onclick="inputCase()") Submit
