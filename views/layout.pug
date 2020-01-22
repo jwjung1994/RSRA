@@ -1,0 +1,24 @@
+doctype html
+// pug 레이아웃 (기본 메뉴바)
+html
+  head
+    title= title
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    //script(src='https://code.jquery.com/jquery-1.9.1.min.js')
+    script(src="http://code.jquery.com/jquery-latest.min.js")
+    block scripts
+  body
+    div(id='layout-menu-bar')
+      div(class='navbar navbar-inverse navbar-fixed-top')
+        div(class='adjust-nav')
+          div(class='navbar-header')
+            button(type='button', class='navbar-toggle', data-toggle='collapse', data-target='.sidebar-collapse')
+              span(class='icon-bar')
+            a(class='navbar-brand', href='/') 메인 페이지(layout.pug)
+          ul(class='nav navbar-nav')
+            li
+              a(href='/case') Input APT cases
+            li
+              a(href='/elements') 공격 요소 설정/관리
+    hr
+    block content

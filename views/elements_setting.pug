@@ -1,0 +1,47 @@
+extends layout
+block scripts
+  script(src="/javascripts/elements_setting.js")
+block content
+  div(id = 'manage-elements')
+    h2 elements 추가창
+    //요소 추가하는 구역
+    div(id = 'add_element') 
+      -var apt_phase = ["Reconnaissance_phase", "Delivery_phase", "Initial_intrusion_phase", "Connecting_to_server_phase", "Lateral_movement_phase", "Information_gathering_phase", "Completing_the_attack_phase"];
+      form(action = '/elements/add', method = 'post') 
+        label(for = 'select-stage') APT stage : 
+        select(id = 'selected-Stage', name = "selectedStage")
+          option(value = "", disabled, selected = "true") - 
+          each phase in apt_phase
+            option(value = phase) #{phase}
+        label element :       
+        input(type = 'text', name = 'main_element')
+        label sub-element :   
+        input(type = 'text', name = 'sub_element')
+        input(type = 'submit', value = '추가')
+    //저장된 요소들 테이블로 출력
+    div(id = 'stage-result')
+      h3 저장된 요소들
+      p
+      table(id = 'ele_table')
+        thead
+          tr
+            th(hidden) id
+            th APT Stage
+            th APT element
+            th APT sub-element
+            th 삭제란
+        tbody
+          if rows !== null
+            -for(var i = 0; i < rows.length; i++) {
+                tr
+                  td(hidden) #{rows[i]._id}
+                  td #{rows[i].stage}
+                  td #{rows[i].elements}
+                  if rows[i].sub_elements !== '' 
+                    td #{rows[i].sub_elements}                  
+                  else 
+                    td -               
+                  td
+                    input(type = 'button', class = 'del_btn', value = 'delete')
+            -}
+        
