@@ -14,8 +14,10 @@ router.post('/add', function(req, res){
   var eles = new Elements();
   eles.stage = req.body.selectedStage;
   eles.elements = req.body.main_element;
-  eles.sub_elements = req.body.sub_element;
-
+  eles.sub_elements1 = req.body.sub_element1;
+  eles.sub_elements2 = req.body.sub_element2;
+  eles.sub_elements3 = req.body.sub_element3;
+  eles.instance = req.body.instance;
   eles.save(function (err) {
     if(err){
       console.log(err);

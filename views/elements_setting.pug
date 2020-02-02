@@ -15,8 +15,14 @@ block content
             option(value = phase) #{phase}
         label element :       
         input(type = 'text', name = 'main_element')
-        label sub-element :   
-        input(type = 'text', name = 'sub_element')
+        label sub-element1 :   
+        input(type = 'text', name = 'sub_element1')
+        label sub-element2 :   
+        input(type = 'text', name = 'sub_element2')
+        label sub-element3 :   
+        input(type = 'text', name = 'sub_element3')          
+        label instance :   
+        input(type = 'text', name = 'instance')
         input(type = 'submit', value = '추가')
     //저장된 요소들 테이블로 출력
     div(id = 'stage-result')
@@ -28,7 +34,10 @@ block content
             th(hidden) id
             th APT Stage
             th APT element
-            th APT sub-element
+            th APT sub-element1
+            th APT sub-element2
+            th APT sub-element3
+            th instance
             th 삭제란
         tbody
           if rows !== null
@@ -37,10 +46,22 @@ block content
                   td(hidden) #{rows[i]._id}
                   td #{rows[i].stage}
                   td #{rows[i].elements}
-                  if rows[i].sub_elements !== '' 
-                    td #{rows[i].sub_elements}                  
+                  if rows[i].sub_elements1 !== '' 
+                    td #{rows[i].sub_elements1}                  
                   else 
-                    td -               
+                    td -      
+                  if rows[i].sub_elements2 !== '' 
+                    td #{rows[i].sub_elements2}                  
+                  else 
+                    td -   
+                  if rows[i].sub_elements3 !== '' 
+                    td #{rows[i].sub_elements3}                  
+                  else 
+                    td -                       
+                  if rows[i].instance !== '' 
+                    td #{rows[i].instance}                  
+                  else 
+                    td -                                                
                   td
                     input(type = 'button', class = 'del_btn', value = 'delete')
             -}
