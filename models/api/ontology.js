@@ -1,12 +1,13 @@
-const SparqlClient = require('./client');
+const SparqlClient = require('../client');
 var Promise = require('bluebird');
 
 var endpoint = 'http://localhost:3030/ds/query';
 const client = new SparqlClient(endpoint);
 //==========================================================================================
 /* case list 불러오는 쿼리   */
-exports.findCases_exp = function findCases_exp(){
+exports.findCaseLists = function findCaseLists(){
   return new Promise(function(res){
+    var result = [];
     var list = [];
     var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
@@ -15,12 +16,16 @@ exports.findCases_exp = function findCases_exp(){
         "PREFIX apt: <http://www.semanticweb.org/test2#>" +
         "SELECT ?cases WHERE { ?cases rdf:type apt:APT_attack_cases.}";
     client.query(query, function(error, results){
-        list = results.results.bindings;
-        res(list); //return
+        result = results.results.bindings;
+        for(var i = 0; i < result.length; i++){
+          var caseIndex = result[i].cases.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
+          list.push(caseIndex);
+          res(list);
+        }
     });
   });
 };
-/* 공격단계부터 그 바로 하위 클래스까지만 */
+/* 공격단계부터 그 바로 하위 클래스까지만
 exports.findCases_exp2 = function findCases_exp2(){
   return new Promise(function(res){
     var list = [];
@@ -36,8 +41,9 @@ exports.findCases_exp2 = function findCases_exp2(){
     });
   });
 };
+*/
 /* 공격단계부터 인스턴스 끝까지*/
-exports.findCases_exp3 = function findCases_exp3(){
+exports.loadSpecificCase = function loadSpecificCase(caseIndex){
   return new Promise(function(res){
     var list = [];
     var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
@@ -45,12 +51,27 @@ exports.findCases_exp3 = function findCases_exp3(){
         "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
         "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-        "SELECT ?phase ?sub1 ?sub2 ?sub3 ?sub4 ?instance WHERE { apt:APTC_01 apt:use+ ?instance. ?phase rdfs:subClassOf apt:APT_attack_elements. ?instance rdf:type ?sub1. ?sub1 rdfs:subClassOf ?phase. optional { ?instance rdf:type ?sub2. ?sub2 rdfs:subClassOf ?sub1. optional { ?instance rdf:type ?sub3. ?sub3 rdfs:subClassOf ?sub2. optional { ?instance rdf:type ?sub4. ?sub4 rdfs:subClassOf ?sub3 } } } } order by desc(?phase)";
+        "SELECT ?phase ?sub1 ?sub2 ?sub3 ?sub4 ?instance WHERE { apt:" + caseIndex + " apt:use+ ?instance. ?phase rdfs:subClassOf apt:APT_attack_elements. ?instance rdf:type ?sub1. ?sub1 rdfs:subClassOf ?phase. optional { ?instance rdf:type ?sub2. ?sub2 rdfs:subClassOf ?sub1. optional { ?instance rdf:type ?sub3. ?sub3 rdfs:subClassOf ?sub2. optional { ?instance rdf:type ?sub4. ?sub4 rdfs:subClassOf ?sub3 } } } } order by desc(?phase)";
+    client.query(query, function(error, results){
+        list = results.results.bindings;
+        res(list);
+    });
+  });
+  /*
+  return new Promise(function(res){
+    var list = [];
+    var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
+        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+        "PREFIX apt: <http://www.semanticweb.org/test2#>" +
+        "SELECT ?phase ?sub1 ?sub2 ?sub3 ?sub4 ?instance WHERE { apt:APTC_04 apt:use+ ?instance. ?phase rdfs:subClassOf apt:APT_attack_elements. ?instance rdf:type ?sub1. ?sub1 rdfs:subClassOf ?phase. optional { ?instance rdf:type ?sub2. ?sub2 rdfs:subClassOf ?sub1. optional { ?instance rdf:type ?sub3. ?sub3 rdfs:subClassOf ?sub2. optional { ?instance rdf:type ?sub4. ?sub4 rdfs:subClassOf ?sub3 } } } } order by desc(?phase)";
     client.query(query, function(error, results){
         list = results.results.bindings;
         res(list); //return
     });
   });
+  */
 };
 //==========================================================================================
 exports.findCases = function findCases(apt_case){

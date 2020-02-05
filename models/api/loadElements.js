@@ -1,4 +1,4 @@
-var Elements = require('./elements');
+var Elements = require('../elements');
 var Promise = require('bluebird');
 
 exports.getElementsbyStage = function (stage_ele){

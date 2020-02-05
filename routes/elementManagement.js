@@ -5,7 +5,7 @@ var Elements = require('../models/elements')
 router.get('/', function(req, res, next){
   //console.log('redirected to elements_setting!');
   Elements.find({}, function(err, row_datas){
-    res.render('elements_setting', {title : '공격 요소 관리', rows : row_datas});
+    res.render('elementManagement', {title : '공격 요소 관리', rows : row_datas});
   });
 });
 

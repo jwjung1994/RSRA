@@ -7,11 +7,12 @@ var helmet        = require('helmet');
 var mongoose      = require('mongoose');
 var dotenv        = require('dotenv').config();
 var sessionParser = require('express-session');
+var MemoryStore   = require('MemoryStore')(sessionParser);
 
-var indexRouter   = require('./routes/index');
+var indexRouter             = require('./routes/index');
 //var usersRouter   = require('./routes/users');
-var inputAPT      = require('./routes/input_apt');
-var settingElements = require('./routes/elements_setting');
+var inputNewCaseRouter      = require('./routes/inputNewCase');
+var elementManagementRouter = require('./routes/elementManagement');
 
 
 var app = express();
@@ -45,6 +46,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(sessionParser({
+  store : new MemoryStore({
+    checkPeriod : 86400000
+  }),
   secret : 'jung',
   resave : true,
   saveUninitialized : true
@@ -53,8 +57,8 @@ app.use(sessionParser({
 
 app.use('/', indexRouter);
 //app.use('/users', usersRouter);
-app.use('/case', inputAPT);
-app.use('/elements', settingElements);
+app.use('/case', inputNewCaseRouter);
+app.use('/elements', elementManagementRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,56 @@
+extends layout
+block scripts
+  script(src="/javascripts/inputNewCase.js")
+block content
+  -var apt_phase = ["Reconnaissance_phase", "Delivery_phase", "Initial_intrusion_phase", "Connecting_to_server_phase", "Lateral_movement_phase", "Information_gathering_phase", "Completing_the_attack_phase"];
+  div(id = 'input-elements-body')
+    div(id = 'select-elements').col-md-12
+      h2 Add APT AttackCase
+      div.col-md-6
+        label(for = 'select-stage') APT Stage : 
+        select.form-control(id = 'selected-Stage')
+          option(value = "", disabled, selected = "true") -
+          each phase in apt_phase
+            if lists_1 !== null
+              if lists_1[0] == phase
+                option(value = phase, selected = "true") #{phase}
+              else
+                option(value = phase) #{phase}  
+            else
+              option(value = phase) #{phase}
+      div.col-md-6
+        label(for = 'select-elements') APT elements : 
+        select.form-control(id = 'selected-elements')
+          option(value = "", disabled, selected = "true") -- select --
+      div.col-md-6    
+        label(for = 'select-sub-elements1') APT sub-elements1 : 
+        select.form-control(id = 'selected-sub-elements1')
+           option(value = "", disabled, selected = "true") -- select -- 
+      div.col-md-6
+        label(for = 'select-sub-elements2') APT sub-elements2 : 
+        select.form-control(id = 'selected-sub-elements2')
+           option(value = "", disabled, selected = "true") -- select -- 
+      div.col-md-6
+        label(for = 'select-sub-elements3') APT sub-elements3 : 
+        select.form-control(id = 'selected-sub-elements3')
+           option(value = "", disabled, selected = "true") -- select -- 
+      div.col-md-12     
+        label instance :  
+        input.form-control(type = 'text', id = 'instance')
+        br 
+        input.btn.btn-primary(type = 'button', id = 'add_btn', value = 'case 추가')
+    div(id = 'selected-elements-case').col-md-12
+      h3 입력된 공격 케이스들      
+      table(id = 'selected-elements-table').col-md-12
+        thead
+          tr
+            th APT Stage
+            th APT element
+            th APT sub-element1
+            th APT sub-element2
+            th APT sub-element3
+            th Instance
+            th 입력 취소
+        tbody
+      button.btn.btn-primary.col-md-12(onclick = "inputCase()") 비교
+  

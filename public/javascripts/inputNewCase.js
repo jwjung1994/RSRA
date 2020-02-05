@@ -1,15 +1,5 @@
-/*
-var max_length = 0;
-if("row_length" in localStorage){
-  max_length = localStorage.getItem("row_length");
-}
-else{
-  max_length = 0;
-}
-*/
-$(document).ready(function(){
-  //call_storage_table();
 
+$(document).ready(function(){
   function sendAjax (sendUrl, sendData){
     var result;
     $.ajax({
@@ -32,7 +22,7 @@ $(document).ready(function(){
     var url = '/case/select_element';
     var result = sendAjax(url, stage_val);
 
-    //console.log(result.lists_1.length);
+    //console.log(result);
     $('#selected-elements').empty();
     $('#selected-elements').append("<option>-</option>");
     for(var i = 1; i < result.lists_1.length; i++){
@@ -90,7 +80,7 @@ $(document).ready(function(){
     var subele_val1 = $('#selected-sub-elements1').val();
     var subele_val2 = $('#selected-sub-elements2').val();
     var subele_val3 = $('#selected-sub-elements3').val();
-
+    var instance_val = $('#instance').val();
     if(ele_val == null){
       ele_val = '-';
     }
@@ -103,53 +93,14 @@ $(document).ready(function(){
     if(subele_val3 == null){
       subele_val3 = '-';
     }
-    var row = [stage_val, ele_val, subele_val1, subele_val2, subele_val3];
-    $('#selected-elements-table > tbody:last').append("<tr><td>" + row[0] + "</td><td>" + row[1] + "</td><td>" + row[2] + "</td><td>" + row[3] +"</td><td>"+ row[4] + "</td><td><button class='btn-danger del'>Delete</button></td></tr>");
-    /*
-    localStorage.setItem("row" + max_length, JSON.stringify(row));
-    localStorage.setItem("row_length", ++max_length);
-    location.reload();
-    */
+    if(instance_val == null){
+      instance_val = '-';
+    }
+    var row = [stage_val, ele_val, subele_val1, subele_val2, subele_val3, instance_val];
+    $('#selected-elements-table > tbody:last').append("<tr><td>" + row[0] + "</td><td>" + row[1] + "</td><td>" + row[2] + "</td><td>" + row[3] +"</td><td>"+ row[4] + "</td><td>"+ row[5] +"</td><td><button class='btn-danger del'>Delete</button></td></tr>");
   });
 
   $("#selected-elements-table").on('click', '.del', function(){
       $(this).closest('tr').remove();
   });
-  /*
-  // 추가되어 있는 테이블 특정 행 삭제
-  $('#selected-elements-table').on('click', '.del_btn', function(){
-    console.log(localStorage.getItem("row_length"));
-    var del_idx = $(this).closest("tr").index();
-    localStorage.removeItem("row" + del_idx);
-    if(!("row" + del_idx in localStorage)){
-      for(var i = del_idx + 1; i < max_length; i++){
-        var shift_val_output = localStorage.getItem("row" + i);
-        localStorage.setItem("row" + del_idx, shift_val_output);
-        del_idx++;
-      }
-    }
-    localStorage.setItem("row_length", --max_length);  // 1차감
-    console.log(localStorage.getItem("row_length"));
-    location.reload();
-  });
-  */
 });
-/*
-function call_storage_table(){
-  var length = localStorage.getItem("row_length");
-  //console.log(length);
-  for(var i = 0; i < length; i++){
-    var output = localStorage.getItem("row" + i);
-    var arr = JSON.parse(output);
-    if(arr != null){
-      console.log(length + '번 추가');
-      var insert_str = "<tr><td>" + arr[0] + "</td><td>" + arr[1] + "</td><td>" + arr[2] + "</td><td><input type ='button' class = 'del_btn', value = '삭제'></td></tr>";
-      $('#selected-elements-table > tbody:last').append(insert_str);
-    }
-  }
-}
-
-function inputCase(){
-  localStorage.clear();
-}
-*/
