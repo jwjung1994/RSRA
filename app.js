@@ -1,0 +1,94 @@
+var createError   = require('http-errors');
+var express       = require('express');
+var path          = require('path');
+var cookieParser  = require('cookie-parser');
+var logger        = require('morgan');
+var helmet        = require('helmet');
+var mongoose      = require('mongoose');
+var dotenv        = require('dotenv').config();
+var sessionParser = require('express-session');
+var MemoryStore   = require('MemoryStore')(sessionParser);
+
+var indexRouter             = require('./routes/index');
+var resultRouter            = require('./routes/result');
+var inputNewCaseRouter      = require('./routes/inputNewCase');
+var elementManagementRouter = require('./routes/elementManagement');
+
+
+var app = express();
+
+//MongoDB 연결 부분
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+var db = mongoose.connection;
+
+db.once('open', function() {
+    // we're connected!
+    console.log('mongoDB connected successfully');
+});
+
+db.on('error', function(error){
+  console.log('Error on DB Connection : ' + error);
+});
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');     // pug 탬플릿 설정
+
+app.use(helmet());
+app.use(logger('dev'));             //morgan
+app.use(express.json());            //body-parser
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(sessionParser({
+  store : new MemoryStore({
+    checkPeriod : 86400000
+  }),
+  secret : 'jung',
+  resave : true,
+  saveUninitialized : true
+}));
+
+
+app.use('/', indexRouter);
+app.use('/result', resultRouter);
+app.use('/case', inputNewCaseRouter);
+app.use('/elements', elementManagementRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  /*
+  if (err.status >= 100 && err.status < 600){
+      res.status(err.status);
+  }
+  else{
+      res.status(500);
+  }
+  */
+  res.render('error');
+});
+
+// 서버 실행
+const PORT = process.env.PORT;
+
+app.listen(PORT, function(){
+  console.log('Listening... PORT is ' + PORT);
+});
+
+//module.exports = app;

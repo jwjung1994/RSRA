@@ -1,0 +1,84 @@
+extends layout
+block scripts
+  script(src="/javascripts/elementManagement.js")
+  link(rel='stylesheet', href='/stylesheets/style_1.css')
+block content
+  div(id = 'manage-elements')
+    //요소 추가하는 구역
+    div(id = 'add_element').col-md-12
+      h2 Add Elements
+      -var apt_phase = ["Reconnaissance_phase", "Delivery_phase", "Initial_intrusion_phase", "Connecting_to_server_phase", "Lateral_movement_phase", "Information_gathering_phase", "Completing_the_attack_phase"];
+      form(action = '/elements/add', method = 'post') 
+        div.col-md-6
+          label(for = 'select-stage') APT stage : 
+          select.form-control(id = 'selected-Stage', name = "selectedStage")
+            option(value = "", disabled, selected = "true") - 
+            each phase in apt_phase
+              option(value = phase) #{phase}
+        div.col-md-6
+          label element :       
+          input.form-control(type = 'text', name = 'main_element')
+        div.col-md-6
+          label sub-element1 :   
+          input.form-control(type = 'text', name = 'sub_element1')
+        div.col-md-6
+          label sub-element2 :   
+          input.form-control(type = 'text', name = 'sub_element2')
+        div.col-md-6
+          label sub-element3 :   
+          input.form-control(type = 'text', name = 'sub_element3')
+        div.col-md-6          
+          label instance :   
+          input.form-control(type = 'text', name = 'instance')
+          br
+        input.btn.btn-primary.col-md-12(type = 'submit', value = '추가')
+    //저장된 요소들 테이블로 출력
+    div(id = 'stage-result').col-md-12
+      //h3 저장된 요소들
+      p
+      table(id = 'ele_table').col-md-12
+        caption 
+          h2 Stored Elements
+          form(action="" id="setRows")
+            p
+              | showing  
+              input(type="text" name="rowPerPage" value="15")
+              |   item per page
+
+        thead
+          tr
+            th(hidden) id
+            th APT Stage
+            th APT element
+            th APT sub-element1
+            th APT sub-element2
+            th APT sub-element3
+            th instance
+            th 삭제란
+        tbody
+          if rows !== null
+            -for(var i = 0; i < rows.length; i++) {
+                tr
+                  td(hidden) #{rows[i]._id}
+                  td #{rows[i].stage}
+                  td #{rows[i].elements}
+                  if rows[i].sub_elements1 !== '' 
+                    td #{rows[i].sub_elements1}                  
+                  else 
+                    td -      
+                  if rows[i].sub_elements2 !== '' 
+                    td #{rows[i].sub_elements2}                  
+                  else 
+                    td -   
+                  if rows[i].sub_elements3 !== '' 
+                    td #{rows[i].sub_elements3}                  
+                  else 
+                    td -                       
+                  if rows[i].instance !== '' 
+                    td #{rows[i].instance}                  
+                  else 
+                    td -                                                
+                  td
+                    input.btn-danger(type = 'button', class = 'del_btn', value = 'delete')
+            -}
+        

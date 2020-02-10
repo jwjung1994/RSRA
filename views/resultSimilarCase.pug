@@ -1,0 +1,22 @@
+extends result
+block scripts
+
+block result
+    table#ele_table.col-md-12
+        thead
+            tr
+                th APT Stage
+                th Element
+                th Sub1
+                th Sub2
+                th Sub3
+                th Name
+        tbody
+        //-
+            -var i = 0;
+            each p in phaseList
+                tr
+                    td=p
+                    td=classList[i]
+                    td=elementList[i]
+                -i++;
