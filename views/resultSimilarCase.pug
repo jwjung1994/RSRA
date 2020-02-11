@@ -2,21 +2,37 @@ extends result
 block scripts
 
 block result
-    table#ele_table.col-md-12
+  if resultData != null
+    -for(var i = 0; i < resultData.length; i++){
+      label 케이스 : 
+        - var a = resultData[i].casenm;
+        a(href = '/result/risk/' + a) #{resultData[i].casenm}
+      br
+      label 요소 유사도 : #{resultData[i].eleSimilarity}
+      br
+      label 패턴 유사도 : #{resultData[i].patSimilarity}
+      br
+      table#ele_table.col-md-12
         thead
-            tr
-                th APT Stage
-                th Element
-                th Sub1
-                th Sub2
-                th Sub3
-                th Name
+          tr
+            th APT stage
+            th Element
+            th Sub1
+            th Sub2
+            th Sub3
+            th Instance
         tbody
-        //-
-            -var i = 0;
-            each p in phaseList
-                tr
-                    td=p
-                    td=classList[i]
-                    td=elementList[i]
-                -i++;
+        -for(var j = 0; j < resultData[i].tbl['attack_pattern'].length; j++){
+          tr
+            td #{resultData[i].tbl['attack_pattern'][j].phase}
+            td #{resultData[i].tbl['attack_pattern'][j].element}
+            td #{resultData[i].tbl['attack_pattern'][j].sub_element1}
+            td #{resultData[i].tbl['attack_pattern'][j].sub_element2}
+            td #{resultData[i].tbl['attack_pattern'][j].sub_element3}
+            td #{resultData[i].tbl['attack_pattern'][j].instance}
+        -}
+      hr(class = 'hr-custom')
+      br  
+    -}
+  else
+    h3 null입니다.

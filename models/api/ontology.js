@@ -57,23 +57,9 @@ exports.loadSpecificCase = function loadSpecificCase(caseIndex){
         res(list);
     });
   });
-  /*
-  return new Promise(function(res){
-    var list = [];
-    var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-        "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
-        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
-        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-        "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-        "SELECT ?phase ?sub1 ?sub2 ?sub3 ?sub4 ?instance WHERE { apt:APTC_04 apt:use+ ?instance. ?phase rdfs:subClassOf apt:APT_attack_elements. ?instance rdf:type ?sub1. ?sub1 rdfs:subClassOf ?phase. optional { ?instance rdf:type ?sub2. ?sub2 rdfs:subClassOf ?sub1. optional { ?instance rdf:type ?sub3. ?sub3 rdfs:subClassOf ?sub2. optional { ?instance rdf:type ?sub4. ?sub4 rdfs:subClassOf ?sub3 } } } } order by desc(?phase)";
-    client.query(query, function(error, results){
-        list = results.results.bindings;
-        res(list); //return
-    });
-  });
-  */
 };
 //==========================================================================================
+/*
 exports.findCases = function findCases(apt_case){
     return new Promise(function(res){
         var list = [];
@@ -184,7 +170,7 @@ exports.addList = function addList(list, list2){
     })
 
 };
-
+*/
 /*
 for(r in res1){
     if(!aList[r]){
@@ -194,7 +180,7 @@ for(r in res1){
     }
 }
 */
-
+/*
 exports.recommnedSR = function recommendSR(aList){
     return new Promise(function(rest){
         //자산 중 위험도가 높은 자산 5개를 고름
@@ -211,7 +197,7 @@ function containsObject(obj, list) {
     }
     return false;
 }
-
+*/
 
 exports.findAssetAVP = function findAssetAVP(apt_case) {
     return new Promise(function (res) {
@@ -222,7 +208,7 @@ exports.findAssetAVP = function findAssetAVP(apt_case) {
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
             "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-            "SELECT ?ele ?avc ?asdf WHERE {apt:APTC_01 apt:use ?ele. ?avc rdfs:subClassOf+ apt:Attack_Vector. ?ele rdf:type ?avc. ?avc apt:damage_the_person ?as. ?as apt:express_person ?aa. ?aa apt:is_stakeholder_of ?asdf}";
+            "SELECT ?ele ?avc ?asdf WHERE {apt:"+ apt_case +" apt:use ?ele. ?avc rdfs:subClassOf+ apt:Attack_Vector. ?ele rdf:type ?avc. ?avc apt:damage_the_person ?as. ?as apt:express_person ?aa. ?aa apt:is_stakeholder_of ?asdf}";
         client.query(query, function (error, results) {
             list = results.results.bindings;
             //console.log(list);
@@ -232,7 +218,8 @@ exports.findAssetAVP = function findAssetAVP(apt_case) {
 
                 if(!aList[asdf]){
                     aList[asdf] = 1;
-                }else{
+                }
+                else{
                     aList[asdf] += 1;
                 }
             }
@@ -250,7 +237,7 @@ exports.findAssetAVT = function findAssetAVT(apt_case){
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
             "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-            "SELECT ?ele ?avc ?aa WHERE { apt:APTC_01 apt:use ?ele. ?avc rdfs:subClassOf+ apt:Attack_Vector. ?ele rdf:type ?avc. ?avc apt:damage_the_asset ?as. ?as apt:is_related_system_to ?aa FILTER NOT EXISTS {?ele rdf:type ?c. ?c rdfs:subClassOf+ ?avc.} }";
+            "SELECT ?ele ?avc ?aa WHERE { apt:" + apt_case + " apt:use ?ele. ?avc rdfs:subClassOf+ apt:Attack_Vector. ?ele rdf:type ?avc. ?avc apt:damage_the_asset ?as. ?as apt:is_related_system_to ?aa FILTER NOT EXISTS {?ele rdf:type ?c. ?c rdfs:subClassOf+ ?avc.} }";
 
         client.query(query1, function (error, results1) {
             var list1 = [];
@@ -280,7 +267,7 @@ exports.findAssetP = function findAssetP(apt_case){
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
             "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-            "SELECT ?purpose ?asset Where {   apt:APTC_01 apt:has_purpose ?purpose. ?purpose apt:target ?aa. ?aa apt:is_related_system_to ?asset.}";
+            "SELECT ?purpose ?asset Where {   apt:"+ apt_case +" apt:has_purpose ?purpose. ?purpose apt:target ?aa. ?aa apt:is_related_system_to ?asset.}";
         client.query(query2, function(error, results2){
             var list2 = [];
             list2 = results2.results.bindings;
@@ -309,7 +296,7 @@ exports.findAssetV = function findAssetV(apt_case){
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
             "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-            "SELECT ?asset where {   apt:APTC_01 apt:use ?vul. ?vul rdf:type apt:Human_Vulnerability_Category. ?vul apt:threaten ?h. ?h apt:express_person ?p. ?p apt:is_stakeholder_of ?asset }";
+            "SELECT ?asset where {   apt:"+ apt_case +" apt:use ?vul. ?vul rdf:type apt:Human_Vulnerability_Category. ?vul apt:threaten ?h. ?h apt:express_person ?p. ?p apt:is_stakeholder_of ?asset }";
         client.query(query2, function(error, results2){
             var list2 = [];
             list2 = results2.results.bindings;

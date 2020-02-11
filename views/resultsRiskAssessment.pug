@@ -1,0 +1,18 @@
+extends result
+block scripts
+
+block result
+  if aList != null
+    table#ele_table.col-md-12
+      thead
+        tr
+          th Asset
+          th Count
+      tbody
+      -for(var i in aList){
+        tr
+          td #{i}
+          td #{aList[i]}
+      -}
+  else 
+    h3 null입니다.

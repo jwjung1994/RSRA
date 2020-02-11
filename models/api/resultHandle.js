@@ -15,14 +15,18 @@ exports.compareTable = function compareTable(webTable, result){
         if((pattern[0]['attack_pattern'].length > 0) && (webTable.length > 0)){
           var eleSimilarity = elementSimilarity(webTable, pattern[0]['attack_pattern']);
           var patSimilarity = patternSimilarity(webTable, pattern[0]['attack_pattern']);
-          console.log('================================');
-          console.log('요소 유사도 : ' + eleSimilarity);
-          console.log('패턴 유사도 : ' + patSimilarity);
+          //console.log('================================');
+          //console.log('요소 유사도 : ' + eleSimilarity);
+          //console.log('패턴 유사도 : ' + patSimilarity);
 
           tablescore.push(eleSimilarity);
           tablescore.push(patSimilarity);
         }
-        res(tablescore);
+        //console.log(tablescore);
+        res({
+          score : tablescore,
+          tle : pattern[0]
+          });
       }
     });
   });

@@ -340,6 +340,9 @@ hr {
   border: 0;
   border-top: 1px solid #eee;
 }
+.hr-custom{
+  size : 3;
+}
 .sr-only {
   position: absolute;
   width: 1px;
