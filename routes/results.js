@@ -3,8 +3,16 @@ var router = express.Router();
 
 var caseDB = require('../modules/DB_cases');
 var Ontology = require('../modules/ontology');
-
 /* GET home page. */
+router.get('/', function(req, res, next) {
+    res.render('results', {title: 'RSRA Results'});
+});
+
+/*
+apt : 유사도 높은 공격 (results_apt_template)
+risk : 자산 위험 평가 (results_risk_assessment)
+recommend : 보안 요구사항 명세 (results_recommend)
+ */
 router.get('/:menu?', function(req, res, next) {
     var menu = req.params.menu;
     if(menu == 'apt'){
@@ -37,9 +45,6 @@ router.get('/:menu?', function(req, res, next) {
                 });
             });
         });
-
-
-
     }else next();
 });//유사도 높은 공격 보여줌
 
@@ -103,9 +108,5 @@ router.get('/:menu?', function(req, res, next) {
         res.render('results_recommend', {title: 'RSRA Results'});
     }else next();
 });//보안 요구사항 명세
-
-router.get('/', function(req, res, next) {
-    res.render('results', {title: 'RSRA Results'});
-});
 
 module.exports = router;

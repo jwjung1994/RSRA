@@ -21,6 +21,8 @@ exports.findCases = function findCases(apt_case){
     });
 };
 
+
+//ele -> element, cla -> highLevelClass
 function findSuperClass(element, highLevelClass){
     return new Promise(function(res){
         var list = [];
@@ -59,6 +61,7 @@ exports.findSuperClasses = function findSuperClasses(elements){
         //console.log(list);
         var plist = [];
         for(var i in list){
+          // y : ele_phase -> cla, x : phase_eles -> ele
             var cla = list[i].y.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
             var ele = list[i].x.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
             var p = findSuperClass(ele, cla);

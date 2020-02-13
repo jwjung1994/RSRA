@@ -51,7 +51,7 @@ function addElement(){
         var arr = [ele, '-'];
     var name = $('#ele_name').val();
     $('#ele_name').val('');
-    $('#ele_table > tbody:last').append("<tr><td>" + phase + "</td><td>" + arr[0] + "</td><td>" + arr[1] + "</td><td>" + name +"</td><td><button class='btn-danger del'>Delete</button></td></tr>");
+    $('#ele_table > tbody:last').append("<tr><td>" + phase + "</td><td>" + arr[0] + "</td><td>" + arr[1] + "</td><td>" + name +"</><td><button class='btn-danger del'>Delete</button></td></tr>");
 }
 
 function inputCase(){

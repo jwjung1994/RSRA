@@ -8,24 +8,18 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+//var usersRouter = require('./routes/users');
 var inputDomain = require('./routes/input_domain');
 var inputAPT = require('./routes/input_apt');
 var results = require('./routes/results');
 
-
-
 var app = express();
-
 var mongodb = mongoose.connection;
 mongodb.on('error', console.error);
 mongodb.once('open', function(){
     console.log("connected to mongod server");
 });
-
 mongoose.connect('mongodb://localhost/RSRA');
-
-var Cases = require('./modules/case_schema');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//app.use('/users', usersRouter);
 app.use('/domain', inputDomain);
 app.use('/case', inputAPT);
 app.use('/results', results);

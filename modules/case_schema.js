@@ -1,3 +1,5 @@
+/* 몽고DB Table 1 */
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
