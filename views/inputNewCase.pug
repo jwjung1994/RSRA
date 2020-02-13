@@ -5,7 +5,7 @@ block content
   -var apt_phase = ["Reconnaissance_phase", "Delivery_phase", "Initial_intrusion_phase", "Connecting_to_server_phase", "Lateral_movement_phase", "Information_gathering_phase", "Completing_the_attack_phase"];
   div(id = 'input-elements-body')
     div(id = 'select-elements').col-md-12
-      h2 Add APT AttackCase
+      h2 Input APT case elements
       div.col-md-6
         label(for = 'select-stage') APT Stage : 
         select.form-control(id = 'selected-Stage')
@@ -40,7 +40,7 @@ block content
         br 
         input.btn.btn-primary(type = 'button', id = 'add_btn', value = 'case 추가')
     div(id = 'selected-elements-case').col-md-12
-      h3 입력된 공격 케이스들      
+      h3 Inputted Elements     
       table(id = 'selected-elements-table').col-md-12
         thead
           tr
