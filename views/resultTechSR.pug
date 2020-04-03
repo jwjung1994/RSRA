@@ -1,0 +1,50 @@
+extends resultSRlayer
+block resultSRlayer
+  if dbsr_tbl != null
+    table#ele_table.col-md-12.type08
+      thead
+        tr
+            th SR
+            th Security Goal
+            th Details
+            th Num
+      tbody
+      -for(var i = 0; i < dbsr_tbl.length; i++){
+        tr
+          td #{dbsr_tbl[i].sr}
+          td #{dbsr_tbl[i].securitygoal}
+          td #{dbsr_tbl[i].detail}
+          td #{dbsr_tbl[i].num}
+      -}
+  if svsr_tbl != null
+    table#ele_table.col-md-12.type08
+      thead
+        tr
+            th SR
+            th Security Goal
+            th Details
+            th Num
+      tbody
+      -for(var i = 0; i < svsr_tbl.length; i++){
+        tr
+          td #{svsr_tbl[i].sr}
+          td #{svsr_tbl[i].securitygoal}
+          td #{svsr_tbl[i].detail}
+          td #{svsr_tbl[i].num}
+      -}
+  if pcsr_tbl != null
+    table#ele_table.col-md-12.type08
+      thead
+        tr
+            th SR
+            th Security Goal
+            th Details
+            th Num
+      tbody
+      -for(var i = 0; i < pcsr_tbl.length; i++){
+        tr
+          td #{pcsr_tbl[i].sr}
+          td #{pcsr_tbl[i].securitygoal}
+          td #{pcsr_tbl[i].detail}
+          td #{pcsr_tbl[i].num}
+      -}            

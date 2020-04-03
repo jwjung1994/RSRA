@@ -2,6 +2,9 @@ var Cases = require('../cases');
 var Content = require('../content');
 var Promise = require('bluebird');
 
+var SRcase_H = require('../srcase_h');
+var SRcase_T = require('../srcase_t');
+
 exports.checkCaseId = function checkCaseId(caseIndex){
   return new Promise(function(res){
     var count = caseIndex.length;
@@ -20,7 +23,7 @@ exports.insertCases = function insertCases(caseID, caseElement){
       if(err){
         console.log(err);
       }
-      else{   // caseID 삽입완료했으니 내용물도 추가하는 거 코딩하기
+      else{   
         var contents = new Content();
         for(var i = 0; i < caseElement.length; i++){
           if(caseElement[i].hasOwnProperty('phase')){
@@ -66,9 +69,47 @@ exports.insertCases = function insertCases(caseID, caseElement){
           });
         }
 
-        res('hi');
+        res('end');
       }
     });
 
+  });
+};
+
+exports.insertHSR = function insertHSR(caseID, caseElement){
+  return new Promise(function(res){ 
+    var SRcase_h = new SRcase_H();
+    for(var i = 0; i < caseElement.length; i++){
+      SRcase_h.sr = caseElement[i].sr;
+      SRcase_h.detail = caseElement[i].detail;
+      SRcase_h.num = caseElement[i].num;
+      //console.log(SRcase_h);
+
+      Cases.findOneAndUpdate({caseindex : caseID}, { $push : {Hsr : SRcase_h}}, function(err, result){
+        if(err){
+          console.log(err);
+        }
+      });
+    }
+    res('end');
+  });
+};
+
+exports.insertTSR = function insertTSR(caseID, caseElement){
+  return new Promise(function(res){
+    var SRcase_t = new SRcase_T();
+    for(var i = 0; i < caseElement.length; i++){
+      SRcase_t.sr = caseElement[i].sr;
+      SRcase_t.securitygoal = caseElement[i].securitygoal;
+      SRcase_t.detail = caseElement[i].detail;
+      SRcase_t.num = caseElement[i].num;
+
+      Cases.findOneAndUpdate({caseindex : caseID}, { $push : {Tsr : SRcase_t}}, function(err, result){
+        if(err){
+          console.log(err);
+        }
+      });
+    }
+    res('end');
   });
 };

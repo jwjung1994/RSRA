@@ -1,0 +1,16 @@
+extends result
+block result 
+    div(id = 'page-wrapper')
+        div(id = 'inner')
+            div(class = 'row')
+                div(class = 'col-md-12')
+                    div
+                        ul(class = 'nav nav-tabs')
+                            li
+                                -var name = casename;
+                                a(href = '/result/caseT/' + name) 기술적 자산
+                            li
+                                a(href = '/result/caseH/' + name) 인적 자산
+                    block resultSRlayer
+
+

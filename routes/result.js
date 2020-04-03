@@ -5,6 +5,9 @@ var Ontology  = require('../models/api/ontology');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.render('result', {title : 'Result'});
+  req.session.destroy(function(){
+    req.session;
+  });
 });
 router.get('/apt', function(req, res, next){
   console.log('[menu/apt]');
@@ -18,27 +21,19 @@ router.get('/apt', function(req, res, next){
   }
   else
     res.render('resultSimilarCase', {title : 'Similar Case', resultData : null});
-  req.session.resultData = null;
+
   //console.log(req.session.resultData);
 });
+
+/* 자산 조회 */
 router.get('/risk/:a?', function(req, res, next){
   var a = req.params.a;
-  console.log(a);
+  //console.log(a);
   Ontology.findAssetAVP(a).then(function(res0){
     Ontology.findAssetV(a).then(function(res1){ //-> Vulnerability(그림19-2)
       Ontology.findAssetAVT(a).then(function(res2){
           Ontology.findAssetP(a).then(function(res3){ //-> Attack Purpose(그림19-1)
               var aList = {};
-              /*
-              for(var r in res0){
-                  if(!(r in aList)){
-                      aList[r] = 1;
-                      //console.log(r);
-                  }else{
-                      aList[r]+=res0[r];
-                  }
-              }
-              */
               aList = res0;
               for(var r1 in res1){
                   if(!(r1 in aList)){
@@ -68,7 +63,58 @@ router.get('/risk/:a?', function(req, res, next){
     });
   });
 });
+/* 케이스에 따른 보안요구사항 */
+router.get('/securityrequire/:a?', function(req, res, next){
+  //var casename = req.params.a;
+  req.session.name = req.params.a;
+  res.render('resultSRlayer', {title: 'RSRA Results', casename: req.session.name});
+});
 
+router.get('/caseT/:a?', function(req, res, next){
+  var casename = req.session.name;
+  caseDB.getSR_T(casename).then(function(table){
+    //console.log(table[0].Tsr);
+    var dbsr = [];
+    var pcsr = [];
+    var svsr = [];
+    for(var i = 0; i < table[0].Tsr.length; i++){
+      //console.log(table[0].Tsr[i].sr);
+      if(table[0].Tsr[i].sr.includes('DBSR')){
+        dbsr.push(table[0].Tsr[i]);
+      }
+      else if(table[0].Tsr[i].sr.includes('SVSR')){
+        svsr.push(table[0].Tsr[i]);
+      }
+      else{
+        pcsr.push(table[0].Tsr[i]);
+      }
+    }
+    pcsr.sort(function(a, b){
+      return a.sr > b.sr ? 1 : a.sr < b.sr ? -1 : 0;
+    });
+    svsr.sort(function(a, b){
+      return a.sr > b.sr ? 1 : a.sr < b.sr ? -1 : 0;
+    });
+
+    //console.log(dbsr);
+    //console.log(pcsr);
+    //console.log(svsr);
+    res.render('resultTechSR', {title : 'RSRA Results', dbsr_tbl: dbsr, svsr_tbl : svsr, pcsr_tbl : pcsr});
+  });
+  
+});
+
+router.get('/caseH/:a?', function(req, res, next){
+  var casename = req.session.name;
+  caseDB.getSR_H(casename).then(function(table){
+    table = table[0].Hsr;
+    table.sort(function(a, b){
+      return a.sr > b.sr ? 1 : a.sr < b.sr ? -1 : 0;
+    });
+    console.log(table);
+    res.render('resultHumanSR', {title : 'RSRA Results', result: table});
+  });
+});
 function sortObject(o){
     var sorted = {},
     key, a = [];
@@ -114,7 +160,6 @@ router.post('/sendtable', function(req, res){
 
         //console.log('nm : ' + nm);
         if(nm == result.length - 1){
-          //console.log('!!!!!!!!!!!!!!!!!!!!');
           req.session.resultData = caseScore;
           res.redirect('/result/apt');
         }

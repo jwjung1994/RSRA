@@ -45,6 +45,38 @@ exports.getCaseIndex = function getCaseIndex(table){
   });
 };
 
+exports.getSR_T = function getSR_T(casename){
+  return new Promise(function(res){
+    Cases.find({caseindex : casename}, {Tsr : 1, _id : 0} , function(err, result){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('success!');
+        //console.log(result[0].Tsr.length);
+        
+        res(result);
+      }
+    });
+  });
+};
+
+exports.getSR_H = function getSR_H(casename){
+  return new Promise(function(res){
+    Cases.find({caseindex : casename}, {Hsr : 1, _id : 0}, function(err, result){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('success!');
+        
+        res(result);
+      }
+    });
+  });
+};
+
+
 // 요소 유사도 계산
 function elementSimilarity(table, DB){
   var TABLE_ROW_CNT = table.length, DB_ROW_CNT = DB.length, VECTOR_SIZE = 6;
@@ -108,3 +140,5 @@ function patternSimilarity(table, DB){
   var result = correctCount / TABLE_ROW_CNT;
   return result;
 }
+
+

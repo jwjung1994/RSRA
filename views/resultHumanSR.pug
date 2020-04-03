@@ -1,0 +1,16 @@
+extends resultSRlayer
+block resultSRlayer
+  if result[0] != null
+    table#ele_table.col-md-12.type08
+      thead
+        tr
+            th SR
+            th Details
+            th Num
+      tbody
+      -for(var i = 0; i < result.length; i++){
+        tr
+          td #{result[i].sr}
+          td #{result[i].detail}
+          td #{result[i].num}
+      -}

@@ -108,7 +108,7 @@ $(document).ready(function(){
     var myRows = [];
     var $headers = $("th");
     var $rows = $("tbody tr").each(function(index) {
-        console.log(index);
+        //console.log(index);
 
         myRows.push({
           phase :  $(this).find("td").eq(0).html(),
@@ -139,6 +139,8 @@ $(document).ready(function(){
              alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }*/
     });
+    //alert("성공@!");
+    location.href = "/result/apt";
   });
 
 });

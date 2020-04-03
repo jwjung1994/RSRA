@@ -1,18 +1,25 @@
 extends result
 block scripts
-
+  script(type = 'text/javascript').
+    if(self.name != 'reload'){
+      self.name = 'reload';
+      self.location.reload(true);
+    }
+    else
+      self.name = '';
 block result
   if resultData != null
     -for(var i = 0; i < resultData.length; i++){
-      label 케이스 : 
+      label 케이스 : #{resultData[i].casenm} &nbsp;&nbsp;&nbsp; 
         - var a = resultData[i].casenm;
-        a(href = '/result/risk/' + a) #{resultData[i].casenm}
+        a(href = '/result/risk/' + a) 자산 &nbsp;&nbsp;&nbsp; 
+        a(href = '/result/securityrequire/' + a) 요구사항
       br
       label 요소 유사도 : #{resultData[i].eleSimilarity}
       br
       label 패턴 유사도 : #{resultData[i].patSimilarity}
       br
-      table#ele_table.col-md-12
+      table#ele_table.col-md-12.type08
         thead
           tr
             th APT stage
@@ -32,7 +39,7 @@ block result
             td #{resultData[i].tbl['attack_pattern'][j].instance}
         -}
       hr(class = 'hr-custom')
-      br  
+      br
     -}
   else
-    h3 null입니다.
+    h3 비교할 케이스를 입력해주세요.

@@ -25,23 +25,7 @@ exports.findCaseLists = function findCaseLists(){
     });
   });
 };
-/* 공격단계부터 그 바로 하위 클래스까지만
-exports.findCases_exp2 = function findCases_exp2(){
-  return new Promise(function(res){
-    var list = [];
-    var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-        "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
-        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
-        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-        "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-        "SELECT ?phase ?sub1 ?instance WHERE { apt:APTC_01 apt:use+ ?instance. ?instance rdf:type ?sub1. ?phase rdfs:subClassOf apt:APT_attack_elements. ?sub1 rdfs:subClassOf ?phase.} order by desc(?phase)";
-    client.query(query, function(error, results){
-        list = results.results.bindings;
-        res(list); //return
-    });
-  });
-};
-*/
+
 /* 공격단계부터 인스턴스 끝까지*/
 exports.loadSpecificCase = function loadSpecificCase(caseIndex){
   return new Promise(function(res){
@@ -58,147 +42,7 @@ exports.loadSpecificCase = function loadSpecificCase(caseIndex){
     });
   });
 };
-//==========================================================================================
-/*
-exports.findCases = function findCases(apt_case){
-    return new Promise(function(res){
-        var list = [];
-        var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-            "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
-            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-            "select ?y ?x where { apt:"+ apt_case +" apt:use+ ?x. ?y rdfs:subClassOf apt:APT_attack_elements. ?x rdf:type ?y. FILTER (?y != owl:NamedIndividual).} order by desc(?y)";
-        client.query(query, function(error, results){
-            list = results.results.bindings;
-            res(list); //return
-        });
-    });
-};
-
-
-//ele -> element, cla -> highLevelClass
-function findSuperClass(element, highLevelClass){
-    return new Promise(function(res){
-        var list = [];
-        //console.log(element);
-        //console.log(highLevelClass);
-        var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-            "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
-            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX apt: <http://www.semanticweb.org/test2#>" +
-            "select ?c where { apt:" + element + " rdf:type ?c. ?c rdfs:subClassOf+ apt:" +  highLevelClass + ". FILTER NOT EXISTS { apt:" + element + " rdf:type ?c1. ?c1 rdfs:subClassOf+ ?c.}}";
-        client.query(query, function(error, results){
-            list = results.results.bindings;
-            //console.log(list);
-            //console.log(element);
-            if(list.length == 0)
-            {
-                var obj = {};
-                obj[element] = 'none'
-                res(obj);
-            }else{
-                var obj = {};
-                obj[element] = list[0].c.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
-                res(obj); //return
-            }
-        });
-    })
-};
-
-
-exports.findSuperClasses = function findSuperClasses(elements){
-    return new Promise(function(res){
-        var list = [];
-        //console.log(list);
-        list = elements;
-        //console.log(list);
-        var plist = [];
-        for(var i in list){
-          // y : ele_phase -> cla, x : phase_eles -> ele
-            var cla = list[i].y.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
-            var ele = list[i].x.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
-            var p = findSuperClass(ele, cla);
-            plist.push(p);
-        }
-        Promise.all(plist).then(values => {
-            //console.log(values);
-            res(values); //return
-        });
-    });
-};
-
-exports.findSuperClasses2 = function findSuperClasses2(elements){
-    return new Promise(function(res){
-        var list = [];
-        list = elements;
-        //console.log(list);
-        var plist = [];
-        for(var i in list){
-            var cla = i;
-            var ele_list = [];
-            ele_list = list[i];
-            for(var j in ele_list){
-                var ele = ele_list[j];
-                var p = findSuperClass(ele, cla);
-                //console.log(ele);
-                //console.log(cla);
-                plist.push(p);
-            }
-        }
-        Promise.all(plist).then(values => {
-            //console.log(values);
-            res(values); //return
-        });
-    });
-};
-
-exports.addList = function addList(list, list2){
-    return new Promise(function(res){
-        var list0 = list;
-        var list00 = list2;
-        for(var r in list0){
-            if(!list00[r]){
-                list00[r] = 1;
-            }else{
-                list00[r] += 1;
-            }
-        }
-        //console.log(list2);
-        res(list00);
-    })
-
-};
-*/
-/*
-for(r in res1){
-    if(!aList[r]){
-        aList[r] = 1;
-    }else{
-        aList[r] += 1;
-    }
-}
-*/
-/*
-exports.recommnedSR = function recommendSR(aList){
-    return new Promise(function(rest){
-        //자산 중 위험도가 높은 자산 5개를 고름
-        //고른 자산을 통해 보안 요구사항 검색
-    });
-};
-
-function containsObject(obj, list) {
-    var i;
-    for (i = 0; i < list.length; i++) {
-        if (JSON.stringify(list[i]) == JSON.stringify(obj)) {
-            return true;
-        }
-    }
-    return false;
-}
-*/
-
+/* 자산 조회 쿼리 */
 exports.findAssetAVP = function findAssetAVP(apt_case) {
     return new Promise(function (res) {
         var list = [];
@@ -289,7 +133,7 @@ exports.findAssetP = function findAssetP(apt_case){
 
 exports.findAssetV = function findAssetV(apt_case){
     return new Promise(function(res){
-        var list = [];
+        //var list = [];
         var aList = {};
         var query2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
             "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
@@ -311,6 +155,74 @@ exports.findAssetV = function findAssetV(apt_case){
                 }
             }
             //console.log(aList);
+            res(aList);
+        });
+    });
+}
+
+
+exports.findHumanSR = function findHumanSR(apt_case){
+    return new Promise(function(res){
+        var aList = new Array();
+        var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+            "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+            "PREFIX apt: <http://www.semanticweb.org/test2#>" +
+            "SELECT ?sr ?details (count(?sr) as ?cnt) WHERE { apt:"+ apt_case +" apt:use ?ele. ?avc rdfs:subClassOf+ apt:Attack_Vector. ?ele rdf:type ?avc. ?avc apt:damage_the_person ?as. ?as apt:express_person ?pe. ?pe apt:is_stakeholder_of ?sys. ?sys apt:is_related_system_to ?ac. ?sg apt:is_set_to ?ac. ?sr apt:is_required ?as. ?sr rdfs:comment ?details. FILTER NOT EXISTS {?ele rdf:type ?c. ?c rdfs:subClassOf+ ?avc.} } GROUP BY ?sr ?details ORDER BY ?sr"
+        client.query(query, function(error, result){
+            var list = [];
+            list = result.results.bindings;
+            for(var i in list){
+                var info = new Object();
+                info.sr = list[i].sr.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
+                info.detail = list[i].details.value;
+                info.num = list[i].cnt.value;
+
+                aList.push(info);
+            }
+            //console.log(aList);
+            res(aList);
+        });
+    });
+}
+
+exports.findTechSR = function findTechSR(apt_case){
+    return new Promise(function(res){
+        var aList = new Array();
+        var query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+            "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+            "PREFIX apt: <http://www.semanticweb.org/test2#>" +
+            "SELECT ?sr ?sg ?details (count(?sr) as ?cnt) WHERE { apt:"+ apt_case +" apt:use ?ele. ?avc rdfs:subClassOf+ apt:Attack_Vector. ?ele rdf:type ?avc. ?avc apt:damage_the_asset ?as. ?as apt:is_related_system_to ?sys. ?ac rdf:type apt:Asset_Category. ?sys apt:is_related_system_to ?ac. ?sg apt:is_set_to ?ac. ?sr apt:is_required ?ac. ?sg apt:suggest_the_security_requirements ?sr. ?sr rdfs:comment ?details. FILTER NOT EXISTS {?ele rdf:type ?c. ?c rdfs:subClassOf+ ?avc.} } GROUP BY ?sr ?sg ?details ORDER BY ?sr"
+
+        client.query(query, function(error, result){
+            var list = [];
+            list = result.results.bindings;
+            for(var i in list){
+                var info = new Object();
+
+                info.sr = list[i].sr.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
+                info.securitygoal = list[i].sg.value.replace(/http\:\/\/www.semanticweb.org\/test2\#/g,'');
+                info.detail = list[i].details.value;
+                info.num = list[i].cnt.value;       
+                      
+                //if (i > 0){
+                    // 바로 전 겹치는게 있으면
+                    //if(aList.reverse().find(obj => obj.sr == info.sr)){
+                    if(i > 0 && (aList[aList.length - 1].sr == info.sr)){
+                        //var lastObj = aList.reverse().find(obj => obj.sr == info.sr);
+                        //console.log(lastObj.sr);
+                        var lastlist = aList.pop();
+                        info.securitygoal = info.securitygoal+","+ lastlist.securitygoal;
+                        info.num = String(Number(info.num) + Number(lastlist.num));
+                        //console.log(info);
+                    }
+                //}  
+                              
+                aList.push(info);
+            }
             res(aList);
         });
     });

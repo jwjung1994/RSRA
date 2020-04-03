@@ -10,9 +10,24 @@ var CaseElementSchema = new Schema({
   instance : String
 });
 
+var HumanSchema = new Schema({
+  sr : String,
+  detail : String,
+  num : String
+});
+
+var TechnicalSchema = new Schema({
+    sr : String,
+    securitygoal : String,
+    detail : String,
+    num : String
+});
+
 var CaseSchema = new Schema({
   caseindex : String,
-  attack_pattern : [CaseElementSchema]
+  attack_pattern : [CaseElementSchema],
+  Hsr : [HumanSchema],
+  Tsr : [TechnicalSchema]
 });
 
 module.exports = mongoose.model('case', CaseSchema);
